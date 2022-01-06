@@ -89,6 +89,97 @@ namespace Tests
             
             Assert.AreEqual(150746316, _fancy.GetIndex(9));
         }
+
+
+        [Test]
+        public void Test3()
+        {
+            _fancy.Append(5);
+            _fancy.GetIndex(0);
+            _fancy.MultAll(14);
+            _fancy.MultAll(10);
+            _fancy.GetIndex(0);
+            _fancy.AddAll(12);
+            _fancy.Append(10);
+            _fancy.Append(4);
+            _fancy.GetIndex(2);
+            _fancy.Append(4);
+            _fancy.Append(2);
+            _fancy.AddAll(1);
+            _fancy.GetIndex(1);
+            _fancy.MultAll(8);
+            _fancy.AddAll(11);
+            _fancy.Append(15);
+            _fancy.AddAll(12);
+            _fancy.GetIndex(0);
+            _fancy.GetIndex(3);
+            _fancy.MultAll(4);
+            _fancy.MultAll(11);
+            _fancy.MultAll(11);
+            _fancy.Append(10);
+            _fancy.AddAll(8);
+            _fancy.GetIndex(2);
+            _fancy.GetIndex(3);
+            _fancy.GetIndex(0);
+            _fancy.Append(7);
+            _fancy.GetIndex(3);
+            _fancy.AddAll(2);
+            _fancy.MultAll(6);
+            _fancy.Append(10);
+            _fancy.MultAll(6);
+            _fancy.AddAll(8);
+            _fancy.GetIndex(7);
+            _fancy.Append(9);
+            _fancy.Append(9);
+            _fancy.AddAll(12);
+            _fancy.GetIndex(0);
+            _fancy.MultAll(13);
+            _fancy.GetIndex(7);
+            _fancy.AddAll(3);
+            _fancy.GetIndex(4);
+            _fancy.MultAll(8);
+            _fancy.AddAll(14);
+            _fancy.GetIndex(2);
+            _fancy.AddAll(9);
+            _fancy.Append(9);
+            _fancy.Append(9);
+            _fancy.Append(7);
+            _fancy.MultAll(5);
+            _fancy.MultAll(12);
+            _fancy.Append(9);
+            _fancy.MultAll(3);
+            _fancy.AddAll(8);
+            _fancy.GetIndex(10);
+            _fancy.AddAll(14);
+            _fancy.MultAll(14);
+            _fancy.MultAll(14);
+            _fancy.MultAll(6);
+            _fancy.Append(1);
+            _fancy.MultAll(3);
+            _fancy.Append(11);
+            _fancy.MultAll(12);
+            _fancy.AddAll(6);
+            _fancy.Append(7);
+            _fancy.Append(13);
+            _fancy.GetIndex(12);
+            _fancy.GetIndex(5);
+            _fancy.GetIndex(6);
+            _fancy.AddAll(1);
+            _fancy.MultAll(11);
+            _fancy.MultAll(11);
+            _fancy.Append(4);
+            _fancy.Append(9);
+            _fancy.GetIndex(7);
+            _fancy.Append(11);
+            _fancy.Append(1);
+            _fancy.Append(3);
+            _fancy.GetIndex(1);
+            _fancy.GetIndex(0);
+
+            Assert.AreEqual(601045500, _fancy.GetIndex(0));
+
+        }
+
     }
 
 }

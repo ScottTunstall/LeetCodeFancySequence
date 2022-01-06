@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace LeetcodeFancySequence
         }
 
 
-        private List<long> _vals;
+        private List<int> _vals;
         private List<Op> _ops;
 
         public Fancy()
@@ -72,28 +73,24 @@ namespace LeetcodeFancySequence
         {
             var val = _vals[idx];
 
-            //Console.WriteLine($"Original value @ idx {idx}: {val}");
+            BigInteger asBig = new(val);
 
             foreach (var op in _ops.Where(x=>x.AppliesUpToIndex >=idx))
             {
                 switch (op.OpType)
                 {
                     case OpType.Add:
-                        //Console.Write($"{val} + {op.Val} = ");
-                        val += op.Val;
-                        //Console.WriteLine(val);
+                        asBig += op.Val;
                         break;
 
                     case OpType.Multiply:
-                        //Console.Write($"{val} x {op.Val} = ");
-                        val *= op.Val;
-                        //Console.WriteLine(val);
+                        asBig *= op.Val;
                         break;
 
                 }
             }
 
-            return (int) (val % MODULO);
+            return (int) (asBig % MODULO);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace LeetcodeFancySequence
             if (commands.Length != args.Length)
                 throw new ArgumentException(nameof(args));
 
-            var varname = "fancy";
+            var varname = "_fancy";
 
             for (int i = 0; i < commands.Length; i++)
             {
