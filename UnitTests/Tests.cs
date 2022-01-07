@@ -14,6 +14,20 @@ namespace Tests
         }
 
         [Test]
+        public void Test_Mult()
+        {
+            _fancy.Append(1);
+            _fancy.MultAll(5);
+            _fancy.MultAll(2);
+            _fancy.Append(2);
+            _fancy.MultAll(6);
+            
+            Assert.AreEqual(60, _fancy.GetIndex(0));
+            Assert.AreEqual(12, _fancy.GetIndex(1));
+        }
+
+
+        [Test]
         public void Test1()
         {
             // The example given for the problem
@@ -21,7 +35,8 @@ namespace Tests
             _fancy.AddAll(3); // fancy sequence: [2+3] -> [5]
             _fancy.Append(7); // fancy sequence: [5, 7]
             _fancy.MultAll(2); // fancy sequence: [5*2, 7*2] -> [10, 14]
-            _fancy.GetIndex(0); // return 10
+            Assert.AreEqual(10,_fancy.GetIndex(0)); // return 10
+            
             _fancy.AddAll(3); // fancy sequence: [10+3, 14+3] -> [13, 17]
             _fancy.Append(10); // fancy sequence: [13, 17, 10]
             _fancy.MultAll(2); // fancy sequence: [13*2, 17*2, 10*2] -> [26, 34, 20]

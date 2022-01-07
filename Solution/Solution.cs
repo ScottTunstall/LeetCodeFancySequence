@@ -19,21 +19,28 @@ namespace LeetcodeFancySequence
             Multiply
         }
 
-        private struct Op
+        private class Op
         {
             public OpType OpType;
             public int Val;
             public int AppliesUpToIndex;
         }
 
+        private class CalculatedValue
+        {
+            public BigInteger Value;
+            public int OpIndex;
+        }
 
         private List<int> _vals;
         private List<Op> _ops;
+        private Dictionary<int, CalculatedValue> _calculatedValues;
 
         public Fancy()
         {
-            _vals = new();
-            _ops = new();
+            _vals = new List<int>();
+            _ops = new List<Op>();
+            _calculatedValues = new Dictionary<int, CalculatedValue>();
         }
 
         public void Append(int val)
@@ -71,12 +78,16 @@ namespace LeetcodeFancySequence
 
         private int GetValue(int idx)
         {
-            var val = _vals[idx];
+            var calc = GetCalculatedValue(idx);
+            var asBig = calc.Value;
 
-            BigInteger asBig = new(val);
-
-            foreach (var op in _ops.Where(x=>x.AppliesUpToIndex >=idx))
+            for (int i=calc.OpIndex; i<_ops.Count; i++)
             {
+                var op = _ops[i];
+
+                if (idx > op.AppliesUpToIndex)
+                    continue;
+
                 switch (op.OpType)
                 {
                     case OpType.Add:
@@ -86,11 +97,41 @@ namespace LeetcodeFancySequence
                     case OpType.Multiply:
                         asBig *= op.Val;
                         break;
-
                 }
             }
 
+            //var val = (int) asBig;
+
+            SetCalculatedValue(idx, _ops.Count, asBig);
+
             return (int) (asBig % MODULO);
+        }
+
+
+
+        private CalculatedValue GetCalculatedValue(int idx)
+        {
+            if (_calculatedValues.ContainsKey(idx))
+            {
+                return _calculatedValues[idx];
+            }
+
+            return new CalculatedValue()
+            {
+                OpIndex = 0,
+                Value = _vals[idx]
+            };
+        }
+
+
+        private void SetCalculatedValue(int idx, int opIndex, BigInteger value)
+        {
+            if (!_calculatedValues.ContainsKey(idx))
+                _calculatedValues[idx] = new CalculatedValue();
+            
+            _calculatedValues[idx].OpIndex = opIndex;
+            _calculatedValues[idx].Value = value;
+
         }
     }
 }
