@@ -23,29 +23,29 @@ namespace LeetcodeFancySequence
         {
             public OpType OpType;
             public int Val;
-            public int AppliesUpToIndex;
         }
 
-        private class CalculatedValue
+        private class PreCalculatedValue
         {
             public BigInteger Value;
             public int OpIndex;
         }
 
-        private List<int> _vals;
-        private List<Op> _ops;
-        private Dictionary<int, CalculatedValue> _calculatedValues;
+        private readonly List<int> _vals;
+        private readonly List<Op> _ops;
+        private readonly Dictionary<int, PreCalculatedValue> _calculatedValues;
 
         public Fancy()
         {
             _vals = new List<int>();
             _ops = new List<Op>();
-            _calculatedValues = new Dictionary<int, CalculatedValue>();
+            _calculatedValues = new Dictionary<int, PreCalculatedValue>();
         }
 
         public void Append(int val)
         {
             _vals.Add(val);
+            SetPreCalculatedValue(_vals.Count-1, _ops.Count, val);
         }
 
         public void AddAll(int inc)
@@ -54,7 +54,6 @@ namespace LeetcodeFancySequence
             {
                 OpType = OpType.Add,
                 Val = inc,
-                AppliesUpToIndex = _vals.Count-1
             });
         }
 
@@ -64,7 +63,6 @@ namespace LeetcodeFancySequence
             {
                 OpType = OpType.Multiply,
                 Val = m,
-                AppliesUpToIndex = _vals.Count - 1
             });
         }
 
@@ -78,56 +76,38 @@ namespace LeetcodeFancySequence
 
         private int GetValue(int idx)
         {
-            var calc = GetCalculatedValue(idx);
+            var calc = GetPreCalculatedValue(idx);
             var asBig = calc.Value;
 
             for (int i=calc.OpIndex; i<_ops.Count; i++)
             {
                 var op = _ops[i];
-
-                if (idx > op.AppliesUpToIndex)
-                    continue;
-
-                switch (op.OpType)
-                {
-                    case OpType.Add:
-                        asBig += op.Val;
-                        break;
-
-                    case OpType.Multiply:
-                        asBig *= op.Val;
-                        break;
-                }
+                if (op.OpType == OpType.Add)
+                    asBig += op.Val;
+                else
+                    asBig *= op.Val;
+                
             }
 
             //var val = (int) asBig;
 
-            SetCalculatedValue(idx, _ops.Count, asBig);
+            SetPreCalculatedValue(idx, _ops.Count, asBig);
 
             return (int) (asBig % MODULO);
         }
 
 
 
-        private CalculatedValue GetCalculatedValue(int idx)
-        {
-            if (_calculatedValues.ContainsKey(idx))
-            {
-                return _calculatedValues[idx];
-            }
-
-            return new CalculatedValue()
-            {
-                OpIndex = 0,
-                Value = _vals[idx]
-            };
+        private PreCalculatedValue GetPreCalculatedValue(int idx)
+        { 
+            return _calculatedValues[idx];
         }
 
 
-        private void SetCalculatedValue(int idx, int opIndex, BigInteger value)
+        private void SetPreCalculatedValue(int idx, int opIndex, in BigInteger value)
         {
             if (!_calculatedValues.ContainsKey(idx))
-                _calculatedValues[idx] = new CalculatedValue();
+                _calculatedValues[idx] = new PreCalculatedValue();
             
             _calculatedValues[idx].OpIndex = opIndex;
             _calculatedValues[idx].Value = value;
