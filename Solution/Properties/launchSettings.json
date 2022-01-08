@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LeetcodeFancySequence": {
+      "commandName": "Project",
+      "commandLineArgs": ">scott.txt"
+    }
+  }
+}

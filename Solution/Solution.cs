@@ -13,13 +13,13 @@ namespace LeetcodeFancySequence
     {
         private const int MODULO = 1000000007;
 
-        private enum OpType
+        private enum OpType: byte
         {
             Add,
             Multiply
         }
 
-        private class Op
+        private struct Op
         {
             public OpType OpType;
             public int Val;
@@ -27,25 +27,29 @@ namespace LeetcodeFancySequence
 
         private class PreCalculatedValue
         {
-            public BigInteger Value;
+            public int Value;
             public int OpIndex;
         }
 
-        private readonly List<int> _vals;
+        private int[] _vals;
+        private int _currval;
         private readonly List<Op> _ops;
         private readonly Dictionary<int, PreCalculatedValue> _calculatedValues;
 
         public Fancy()
         {
-            _vals = new List<int>();
+            _vals = new int[50000];
+            _currval = 0;
             _ops = new List<Op>();
             _calculatedValues = new Dictionary<int, PreCalculatedValue>();
         }
 
         public void Append(int val)
         {
-            _vals.Add(val);
-            SetPreCalculatedValue(_vals.Count-1, _ops.Count, val);
+            _vals[_currval] = val;
+            SetPreCalculatedValue(_currval, _ops.Count, val);
+
+            _currval++;
         }
 
         public void AddAll(int inc)
@@ -68,7 +72,7 @@ namespace LeetcodeFancySequence
 
         public int GetIndex(int idx)
         {
-            if (idx >= _vals.Count)
+            if (idx >= _currval)
                 return -1;
 
             return GetValue(idx);
@@ -77,7 +81,7 @@ namespace LeetcodeFancySequence
         private int GetValue(int idx)
         {
             var calc = GetPreCalculatedValue(idx);
-            var asBig = calc.Value;
+            BigInteger asBig = calc.Value;
 
             for (int i=calc.OpIndex; i<_ops.Count; i++)
             {
@@ -89,11 +93,11 @@ namespace LeetcodeFancySequence
                 
             }
 
-            //var val = (int) asBig;
+            var val = (int) (asBig % MODULO);
 
-            SetPreCalculatedValue(idx, _ops.Count, asBig);
+            SetPreCalculatedValue(idx, _ops.Count, val);
 
-            return (int) (asBig % MODULO);
+            return val;
         }
 
 
@@ -104,7 +108,7 @@ namespace LeetcodeFancySequence
         }
 
 
-        private void SetPreCalculatedValue(int idx, int opIndex, in BigInteger value)
+        private void SetPreCalculatedValue(int idx, int opIndex, int value)
         {
             if (!_calculatedValues.ContainsKey(idx))
                 _calculatedValues[idx] = new PreCalculatedValue();
