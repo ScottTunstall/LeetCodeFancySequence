@@ -13,7 +13,7 @@ namespace LeetcodeFancySequence
     {
         private const int MODULO = 1000000007;
 
-        private enum OpType: byte
+        private enum OpType
         {
             Add,
             Multiply
@@ -31,14 +31,14 @@ namespace LeetcodeFancySequence
             public int OpIndex;
         }
 
-        private int[] _vals;
+        private List<int>_vals;
         private int _currval;
         private readonly List<Op> _ops;
         private readonly Dictionary<int, PreCalculatedValue> _calculatedValues;
 
         public Fancy()
         {
-            _vals = new int[50000];
+            _vals = new List<int>();
             _currval = 0;
             _ops = new List<Op>();
             _calculatedValues = new Dictionary<int, PreCalculatedValue>();
@@ -46,14 +46,14 @@ namespace LeetcodeFancySequence
 
         public void Append(int val)
         {
-            _vals[_currval] = val;
+            _vals.Add(val);
             SetPreCalculatedValue(_currval, _ops.Count, val);
-
             _currval++;
         }
 
         public void AddAll(int inc)
         {
+
             _ops.Add(new Op()
             {
                 OpType = OpType.Add,
@@ -72,7 +72,7 @@ namespace LeetcodeFancySequence
 
         public int GetIndex(int idx)
         {
-            if (idx >= _currval)
+            if (idx >= _vals.Count)
                 return -1;
 
             return GetValue(idx);
@@ -83,9 +83,10 @@ namespace LeetcodeFancySequence
             var calc = GetPreCalculatedValue(idx);
             BigInteger asBig = calc.Value;
 
-            for (int i=calc.OpIndex; i<_ops.Count; i++)
+            var ops = _ops.Skip(calc.OpIndex);
+            foreach (var op in ops)
             {
-                var op = _ops[i];
+                //var op = _ops[i];
                 if (op.OpType == OpType.Add)
                     asBig += op.Val;
                 else
